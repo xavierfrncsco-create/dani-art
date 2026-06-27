@@ -1324,32 +1324,39 @@
 
       Por ahora simulamos la confirmación (modo demo):
     */
-    setTimeout(() => {
+ fetch('/api/create-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: cartTotal(),
+        email: email,
+        name: name + ' ' + last,
+        clientTransactionId: 'DA' + Date.now().toString().slice(-10),
+        products: cart.map(p => ({
+          id: p.id,
+          name: p.name,
+          cat: p.cat,
+          price: p.price,
+          link: p.link,
+        })),
+      }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.payphoneUrl) {
+        window.location.href = data.payphoneUrl;
+      } else {
+        document.getElementById('processingWrap').classList.remove('show');
+        btn.disabled = false;
+        showToast('Error al conectar con Payphone. Intenta de nuevo.');
+      }
+    })
+    .catch(error => {
       document.getElementById('processingWrap').classList.remove('show');
       btn.disabled = false;
-
-      document.getElementById('successBox').innerHTML = `
-        <div class="s-label">Confirmación de compra</div>
-        <div class="s-row"><strong>Cliente:</strong> ${name} ${last}</div>
-        <div class="s-row"><strong>Correo:</strong> ${email}</div>
-        <div class="s-row"><strong>Pagado con:</strong> Payphone · tarjeta terminada en ${card.slice(-4)}</div>
-        <div style="margin-top:.8rem;padding-top:.8rem;border-top:0.5px solid var(--nude2);">
-          ${cart.map(p => `<div class="s-row">— ${p.name} · $${p.price}</div>`).join('')}
-        </div>
-        <div style="margin-top:.8rem;padding-top:.8rem;border-top:0.5px solid var(--nude2);
-          font-weight:500;font-size:14px;display:flex;justify-content:space-between;">
-          <span>Total pagado</span><span>$${cartTotal()}</span>
-        </div>
-      `;
-
-      // En producción, Resend se activa desde el webhook de Payphone
-      // Ver: api/confirm-order.js
-      console.log('RESEND → enviando a:', email, cart.map(p => p.link));
-
-      cart = [];
-      updateCartCount();
-      showPage('success');
-    }, 2200);
+      showToast('Error al procesar el pago. Intenta nuevamente.');
+      console.error('Error:', error);
+    });
   }
 
   /* ─── RESET Y VOLVER ─────────────────────────────────── */
