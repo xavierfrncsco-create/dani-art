@@ -16,7 +16,6 @@ export default async function handler(req, res) {
         tax: 0,
         currency: 'USD',
         clientTransactionId: clientTransactionId,
-        storeId: process.env.PAYPHONE_STORE_ID,
         responseUrl: `${process.env.SITE_URL}/confirmacion`,
         cancellationUrl: `${process.env.SITE_URL}`,
         reference: JSON.stringify({ email, name, products }),
