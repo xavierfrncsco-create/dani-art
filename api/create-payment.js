@@ -35,6 +35,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
+      console.log('ERROR PAYPHONE:', JSON.stringify(data));
       return res.status(500).json({ error: 'Error Payphone', detail: data });
     }
 
