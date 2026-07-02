@@ -1324,37 +1324,42 @@
 
       Por ahora simulamos la confirmación (modo demo):
     */
- fetch('/api/create-payment', {
+fetch('https://pay.payphonetodoesposible.com/api/button/Prepare', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 4FzCyuUqm8uQ7Yfudd-56QSnzRyxoa2F1utIp1Q3-MnW0SDJo2GYXs36nyFgddxo3D7cK4qUEGDkrl0yNDtalxg8tIzzsNJ44EpMY-oeMSU8zhmXZBcHMw0YKbqrE3-_dpAw2q5gLKq5LNGNRsPX6fuo98-2jLVt2NKLZBHEDGxO0cNZ0hpNJN7nFTAvmrQyfVb04rGEy-xFTL_nmj47BQ5O48PWXx0DmmkYrLugEPm0MzWnqVPe_sy9Z1YDAKFCcU73xbyPYNUdHBdePO1o15jEOBBxBiB7B60RoYkpAOj3LghTxZxdm_wr2gzkDuJqjRzZJ4RjbM51GC4IR1hyBkmLfTA',
+      },
       body: JSON.stringify({
-        amount: cartTotal(),
-        email: email,
-        name: name + ' ' + last,
+        amount: Math.round(cartTotal() * 100),
+        amountWithoutTax: Math.round(cartTotal() * 100),
+        tax: 0,
+        service: 0,
+        tip: 0,
+        currency: 'USD',
+        storeId: 'Q9ZfMHQh70mTWmgCyYSMDg',
         clientTransactionId: 'DA' + Date.now().toString().slice(-10),
-        products: cart.map(p => ({
-          id: p.id,
-          name: p.name,
-          cat: p.cat,
-          price: p.price,
-          link: p.link,
-        })),
+        reference: 'Compra en Dani Art',
+        responseUrl: 'https://dani-art.vercel.app/confirmacion',
+        cancellationUrl: 'https://dani-art.vercel.app',
+        email: email,
       }),
     })
     .then(r => r.json())
     .then(data => {
-      if (data.payphoneUrl) {
-        window.location.href = data.payphoneUrl;
+      if (data.payWithCard) {
+        window.location.href = data.payWithCard;
       } else {
         document.getElementById('processingWrap').classList.remove('show');
         btn.disabled = false;
-        showToast('Error al conectar con Payphone. Intenta de nuevo.');
+        showToast('Error al conectar con Payphone.');
+        console.error('Respuesta Payphone:', data);
       }
     })
     .catch(error => {
       document.getElementById('processingWrap').classList.remove('show');
       btn.disabled = false;
-      showToast('Error al procesar el pago. Intenta nuevamente.');
+      showToast('Error al procesar el pago.');
       console.error('Error:', error);
     });
   }
