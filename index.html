@@ -1089,7 +1089,7 @@
   // Las API keys van en Vercel Environment Variables, no aquí
 
   /* ─── CATÁLOGO INICIAL ───────────────────────────────── */
- let products = [
+let products = [
   {
     id: 1,
     name: 'Kit de Identidad Visual',
@@ -1097,7 +1097,8 @@
     price: 1,
     desc: 'Todo lo que necesitas para definir la identidad visual de tu marca desde cero.',
     items: ['Logo en 3 versiones', 'Paleta de colores', 'Tipografías seleccionadas', 'Guía de marca PDF'],
-    link: 'https://drive.google.com/file/d/10V8OLCi6p-X1xKapAjhE9YIiXNEltZVQ/view?usp=drive_link',
+    link: 'https://drive.google.com/tu-enlace-1',
+    payphoneUrl: 'https://ppls.me/gGZXVja3mgFGC56hQAGXVQ',
     badge: 'new',
     active: true,
   },
@@ -1109,6 +1110,7 @@
     desc: '30 plantillas editables para posts y stories con estética minimalista y elegante.',
     items: ['30 plantillas Canva', 'Paleta nude y crema', 'Fuentes incluidas', 'Guía de uso'],
     link: 'https://drive.google.com/tu-enlace-2',
+    payphoneUrl: 'https://ppls.me/OiFFrYU353rFgIn6sK1g',
     badge: 'new',
     active: true,
   },
@@ -1120,6 +1122,7 @@
     desc: '50 diapositivas con diseño sobrio y elegante para propuestas y pitches de alto impacto.',
     items: ['50 slides editables', 'PowerPoint + Keynote', 'Iconos incluidos', 'Paleta corporativa'],
     link: 'https://drive.google.com/tu-enlace-3',
+    payphoneUrl: '',
     badge: '',
     active: true,
   },
@@ -1131,6 +1134,7 @@
     desc: 'Plantilla completa para documentar tu identidad visual: colores, tipografías y voz de marca.',
     items: ['20 páginas editables', 'Formato Notion + PDF', 'Ejemplo real incluido', 'Instrucciones paso a paso'],
     link: 'https://drive.google.com/tu-enlace-4',
+    payphoneUrl: '',
     badge: '',
     active: true,
   },
@@ -1142,6 +1146,7 @@
     desc: 'Plantillas para revistas, lookbooks y catálogos con tipografía cuidada y estética limpia.',
     items: ['8 plantillas A4', 'Fuentes incluidas', 'Canva + Figma', 'Uso comercial libre'],
     link: 'https://drive.google.com/tu-enlace-5',
+    payphoneUrl: '',
     badge: 'new',
     active: true,
   },
@@ -1289,80 +1294,19 @@
 
     Ver archivo api/confirm-order.js al final de este HTML.
   */
-  function processPayment() {
-    const name  = document.getElementById('coName').value.trim();
-    const last  = document.getElementById('coLast').value.trim();
-    const email = document.getElementById('coEmail').value.trim();
-    const card  = document.getElementById('ppCard').value.replace(/\s/g, '');
-    const exp   = document.getElementById('ppExp').value.trim();
-    const cvc   = document.getElementById('ppCvc').value.trim();
+function processPayment() {
+  const name  = document.getElementById('coName').value.trim();
+  const email = document.getElementById('coEmail').value.trim();
+  if (!name || !email) { showToast('Completa tu nombre y correo.'); return; }
+  if (cart.length === 0) { showToast('Tu carrito está vacío.'); return; }
 
-    if (!name || !email) { showToast('Completa tu nombre y correo.'); return; }
-    if (card.length < 16) { showToast('Número de tarjeta inválido.'); return; }
-    if (!exp || !cvc)     { showToast('Completa los datos de la tarjeta.'); return; }
-
-    const btn = document.getElementById('payBtn');
-    btn.disabled = true;
-    document.getElementById('processingWrap').classList.add('show');
-
-    /*
-      AQUÍ conecta con tu API de Payphone en producción:
-
-      fetch('/api/create-payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: cartTotal() * 100, // en centavos
-          email, name, last,
-          products: cart.map(p => ({ id: p.id, name: p.name, price: p.price, link: p.link }))
-        })
-      })
-      .then(r => r.json())
-      .then(data => {
-        window.location.href = data.payphoneUrl; // redirige a Payphone
-      });
-
-      Por ahora simulamos la confirmación (modo demo):
-    */
-fetch('https://pay.payphonetodoesposible.com/api/button/Prepare', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer 4FzCyuUqm8uQ7Yfudd-56QSnzRyxoa2F1utIp1Q3-MnW0SDJo2GYXs36nyFgddxo3D7cK4qUEGDkrl0yNDtalxg8tIzzsNJ44EpMY-oeMSU8zhmXZBcHMw0YKbqrE3-_dpAw2q5gLKq5LNGNRsPX6fuo98-2jLVt2NKLZBHEDGxO0cNZ0hpNJN7nFTAvmrQyfVb04rGEy-xFTL_nmj47BQ5O48PWXx0DmmkYrLugEPm0MzWnqVPe_sy9Z1YDAKFCcU73xbyPYNUdHBdePO1o15jEOBBxBiB7B60RoYkpAOj3LghTxZxdm_wr2gzkDuJqjRzZJ4RjbM51GC4IR1hyBkmLfTA',
-      },
-      body: JSON.stringify({
-        amount: Math.round(cartTotal() * 100),
-        amountWithoutTax: Math.round(cartTotal() * 100),
-        tax: 0,
-        service: 0,
-        tip: 0,
-        currency: 'USD',
-        storeId: 1132407,
-        clientTransactionId: 'DA' + Date.now().toString().slice(-10),
-        reference: 'Compra en Dani Art',
-        responseUrl: 'https://dani-art.vercel.app/confirmacion',
-        cancellationUrl: 'https://dani-art.vercel.app',
-        email: email,
-      }),
-    })
-    .then(r => r.json())
-    .then(data => {
-      if (data.payWithCard) {
-        window.location.href = data.payWithCard;
-      } else {
-        document.getElementById('processingWrap').classList.remove('show');
-        btn.disabled = false;
-        showToast('Error al conectar con Payphone.');
-        console.error('Respuesta Payphone:', data);
-      }
-    })
-    .catch(error => {
-      document.getElementById('processingWrap').classList.remove('show');
-      btn.disabled = false;
-      showToast('Error al procesar el pago.');
-      console.error('Error:', error);
-    });
+  if (cart.length === 1 && cart[0].payphoneUrl) {
+    window.location.href = cart[0].payphoneUrl;
+    return;
   }
+
+  showToast('Por favor compra un producto a la vez por ahora.');
+}
 
   /* ─── RESET Y VOLVER ─────────────────────────────────── */
   function resetAndHome() {
