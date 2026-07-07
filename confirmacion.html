@@ -52,10 +52,19 @@ async function confirmarPago() {
 
   try {
     // Confirma el pago con Payphone
+const order = JSON.parse(sessionStorage.getItem('pendingOrder') || '{}');
+
     const confirmRes = await fetch('/api/confirm-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: parseInt(id), clientTransactionId }),
+      body: JSON.stringify({
+        id: parseInt(id),
+        clientTransactionId,
+        email: order.email,
+        name: order.name,
+        products: order.products,
+        total: order.total,
+      }),
     });
 
     const data = await confirmRes.json();
