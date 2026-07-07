@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/confirmacion", "destination": "/confirmacion.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
