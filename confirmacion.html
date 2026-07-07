@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmación de pago — Dani Art</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,sans-serif;background:#FDFAF7;color:#2C2C2A;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+    .box{max-width:480px;width:100%;text-align:center;}
+    .icon{width:56px;height:56px;border-radius:50%;background:#EAF3DE;border:0.5px solid #97C459;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;}
+    h1{font-size:26px;font-weight:300;margin-bottom:.8rem;}
+    p{font-size:14px;color:#888780;line-height:1.7;margin-bottom:1rem;}
+    .detail{background:#F1EFE8;border-radius:4px;padding:1.2rem;text-align:left;margin:1.5rem 0;font-size:13px;color:#444441;line-height:1.8;}
+    .btn{display:inline-block;margin-top:1rem;padding:12px 28px;background:#2C2C2A;color:#FDFAF7;border-radius:2px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;}
+    .loading{color:#888780;font-size:14px;}
+    .error{color:#A32D2D;font-size:13px;background:#FAECE7;border-radius:4px;padding:1rem;margin-top:1rem;}
+  </style>
+</head>
+<body>
+<div class="box">
+  <div id="loadingState">
+    <p class="loading">Confirmando tu pago...</p>
+  </div>
+  <div id="successState" style="display:none;">
+    <div class="icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1>¡Pago confirmado!</h1>
+    <p>Tu compra fue procesada exitosamente. Revisa tu correo — los archivos llegarán en segundos.</p>
+    <div class="detail" id="orderDetail"></div>
+    <a href="https://dani-art.vercel.app" class="btn">Volver a la tienda</a>
+  </div>
+  <div id="errorState" style="display:none;">
+    <h1>Pago no completado</h1>
+    <div class="error">El pago fue cancelado o no fue aprobado. Si crees que es un error, escríbenos a danifalconifotografia@gmail.com</div>
+    <a href="https://dani-art.vercel.app" class="btn" style="margin-top:1.5rem;display:inline-block;">Volver a la tienda</a>
+  </div>
+</div>
+
+<script>
+async function confirmarPago() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const clientTransactionId = params.get('clientTransactionId');
+
+  if (!id || !clientTransactionId) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    return;
+  }
+
+  try {
+    // Confirma el pago con Payphone
+    const confirmRes = await fetch('/api/confirm-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(id), clientTransactionId }),
+    });
+
+    const data = await confirmRes.json();
+
+    if (data.ok) {
+      // Recupera los datos del pedido guardados
+      const order = JSON.parse(sessionStorage.getItem('pendingOrder') || '{}');
+
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('successState').style.display = 'block';
+      document.getElementById('orderDetail').innerHTML = `
+        <strong>Cliente:</strong> ${order.name || ''}<br>
+        <strong>Correo:</strong> ${order.email || ''}<br>
+        <strong>Total pagado:</strong> $${order.total || ''}<br>
+        <strong>ID transacción:</strong> ${id}
+      `;
+      sessionStorage.removeItem('pendingOrder');
+    } else {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('errorState').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+  }
+}
+
+confirmarPago();
+</script>
+</body>
+</html>
