@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   try {
     // Confirma el pago con Payphone
     const confirmRes = await fetch(
-      'https://pay.payphonetodoesposible.com/api/button/V2/Confirm',
+      'https://paymentbox.payphonetodoesposible.com/api/confirm',
       {
         method: 'POST',
         headers: {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           id: id,
-          clientTransactionId: clientTransactionId,
+          clientTxId: clientTransactionId,
         }),
       }
     );
