@@ -1,10 +1,9 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { id, clientTransactionId } = req.body;
+  const { id, clientTransactionId, email, name, products, total } = req.body;
 
   try {
-    // Confirma el pago con Payphone
     const confirmRes = await fetch(
       'https://paymentbox.payphonetodoesposible.com/api/confirm',
       {
@@ -27,16 +26,12 @@ export default async function handler(req, res) {
     try {
       confirmData = JSON.parse(rawText);
     } catch(e) {
-      return res.status(500).json({ ok: false, error: 'Respuesta inválida de Payphone', raw: rawText.substring(0, 200) });
+      return res.status(500).json({ ok: false, error: 'Respuesta inválida', raw: rawText.substring(0, 200) });
     }
 
-    // statusCode 3 = pago aprobado
     if (confirmData.statusCode !== 3) {
       return res.status(200).json({ ok: false, status: confirmData.statusCode });
     }
-
-    // Envía el correo con Resend
-    const { email, name, products, total } = req.body;
 
     if (email && products) {
       await fetch('https://api.resend.com/emails', {
@@ -70,7 +65,7 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({ ok: true, authorizationCode: confirmData.authorizationCode });
+    return res.status(200).json({ ok: true });
 
   } catch(error) {
     return res.status(500).json({ ok: false, error: error.message });
