@@ -1211,7 +1211,6 @@ let products = [
       ${cart.map(p => `<div class="order-row"><span>${p.name}</span><span>$${p.price}</span></div>`).join('')}
       <div class="order-total"><span>Total</span><span>$${t}</span></div>
     `;
-    document.getElementById('ppTotal').textContent = '$' + t;
     showPage('checkout');
   }
 
