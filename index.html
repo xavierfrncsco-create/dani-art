@@ -1064,6 +1064,7 @@ let products = [
     items: ['30 plantillas Canva', 'Paleta nude y crema', 'Fuentes incluidas', 'Guía de uso'],
     link: 'https://drive.google.com/file/d/1N5Kqd_MKLHpq_KQH8sa_2ys_dTYJ5zh8/view?usp=sharing',
     imagen: '/producto2.png',
+    gratis: true,
     badge: 'GRATIS',
     active: true,
   },
@@ -1124,6 +1125,7 @@ let products = [
     items: ['4 diseños', 'Archivo listo para imprimir', 'Diseño CANVA', 'Descarga digital inmediata'],
     link: 'https://drive.google.com/file/d/1RWji0rrbF6ZaLDeeCxTPiw2RU4pA0oa2/view?usp=sharing',
     imagen: '/producto7.png',
+    gratis: true,
     badge: 'GRATIS',
     active: true,
   },
@@ -1136,6 +1138,7 @@ let products = [
     items: ['3 diseños', 'Archivo listo para imprimir', 'Diseño CANVA', 'Descarga digital inmediata'],
     link: 'https://drive.google.com/file/d/1rWdeVviMWlVMEUm9dNopfIIW4zAFxXdh/view?usp=sharing',
     imagen: '/producto8.png',
+    gratis: true,
     badge: 'GRATIS',
     active: true,
   },
@@ -1160,6 +1163,7 @@ let products = [
     items: ['4 diseños', 'Archivo listo para imprimir', 'Diseño CANVA', 'Descarga digital inmediata'],
     link: 'https://drive.google.com/file/d/1w-u8hb3SXAIbJVjWRhjK_ssw48V3WjFM/view?usp=sharing',
     imagen: '/producto10.png',
+    gratis: true,
     badge: '',
     active: true,
   },
@@ -1172,6 +1176,7 @@ let products = [
     items: ['3 diseños', 'Archivo PDF listo para imprimir', 'Descarga digital inmediata'],
     link: 'https://drive.google.com/file/d/1L1UKEs4cjpKvGeZuYfDBxgQ3Om5OLrf4/view?usp=sharing',
     imagen: '/producto11.png',
+    gratis: true,
     badge: 'GRATIS',
     active: true,
   },
@@ -1196,6 +1201,7 @@ let products = [
     items: ['Archivo PNG de polaroids', 'Totalmente editable', 'Descarga digital inmediata'],
     link: 'https://drive.google.com/file/d/1JSV7i00UIDwYcIee7ELOeK-RvwChRlxt/view?usp=sharing',
     imagen: '/producto13.jpeg',
+    gratis: true,
     badge: 'GRATIS',
     active: true,
   },
@@ -1242,8 +1248,8 @@ let products = [
             <span class="card-price">${p.price === 0 ? 'Gratis' : '$' + p.price}</span>
             ${p.gratis
               ? `<a href="${p.link}" target="_blank" class="add-btn">Descargar gratis</a>`
-              : `<button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>`
-            }
+  : `<button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>`
+}
           </div>
         </div>
       </div>
