@@ -842,61 +842,7 @@
 
 <div class="co-section-lbl">Pago seguro con Payphone</div>
 <div id="pp-button"></div>
-      <div class="pp-header">
-        <div class="pp-brand">
-          <div class="pp-logo-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-          </div>
-          <span class="pp-brand-name">Payphone</span>
-        </div>
-        <div class="pp-secure">
-          <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          PCI DSS 4.0 · Cifrado SSL
-        </div>
-      </div>
-      <div class="pp-methods">
-        <span class="pp-method">Visa</span>
-        <span class="pp-method">Mastercard</span>
-        <span class="pp-method">Diners</span>
-        <span class="pp-method">Discover</span>
-        <span class="pp-method">Débito Ecuador</span>
-      </div>
-      <div class="pp-amount">
-        <span class="pp-amount-label">Total a pagar</span>
-        <span class="pp-amount-val" id="ppTotal">$0</span>
-      </div>
-      <div class="field">
-        <label class="field-label">Número de tarjeta</label>
-        <input class="field-input" id="ppCard" placeholder="0000  0000  0000  0000"
-          maxlength="23" oninput="fmtCard(this)" autocomplete="cc-number"/>
-      </div>
-      <div class="pp-card-row">
-        <div class="field">
-          <label class="field-label">Vencimiento</label>
-          <input class="field-input" id="ppExp" placeholder="MM / AA" maxlength="7"
-            oninput="fmtExp(this)" autocomplete="cc-exp"/>
-        </div>
-        <div class="field">
-          <label class="field-label">CVC</label>
-          <input class="field-input" id="ppCvc" placeholder="•••" maxlength="4"
-            type="password" autocomplete="cc-csc"/>
-        </div>
-      </div>
-      <div class="field">
-        <label class="field-label">Nombre en la tarjeta</label>
-        <input class="field-input" id="ppName" placeholder="Como aparece en la tarjeta"
-          autocomplete="cc-name"/>
-      </div>
-      <button class="pp-pay-btn" id="payBtn" onclick="processPayment()">
-        <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        Pagar con Payphone
-      </button>
-      <div class="pp-footer">
-        <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Pago 100% seguro · Comisión al vendedor · Nunca guardamos tu tarjeta
-      </div>
-    </div>
-  </div>
+ 
 
   <!-- Spinner de procesando -->
   <div class="processing-wrap" id="processingWrap">
