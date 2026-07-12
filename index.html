@@ -1051,6 +1051,7 @@ let products = [
     desc: '¿Qué recibirás? •    6 diseños listos para usar.  •    Archivo compatible con Silhouette Cameo.  •    Ideal para plotter de corte.  •    Descarga digital inmediata. ',
     items: ['Logo en 3 versiones', 'Paleta de colores', 'Tipografías seleccionadas', 'Guía de marca PDF'],
     link: 'https://drive.google.com/file/d/1kYJYxehMGHxG8xaYErh4WFOiS0Adf0lu/view?usp=sharing',
+    imagen: '/producto1.png',
     badge: 'new',
     active: true,
   },
@@ -1062,6 +1063,7 @@ let products = [
     desc: '¿Qué recibirás? •    4 diseños.  •    Archivo listo para imprimir.  •    Diseño CANVA completamente personalizable.  •    Descarga digital inmediata.',
     items: ['30 plantillas Canva', 'Paleta nude y crema', 'Fuentes incluidas', 'Guía de uso'],
     link: 'https://drive.google.com/file/d/1N5Kqd_MKLHpq_KQH8sa_2ys_dTYJ5zh8/view?usp=sharing',
+    imagen: '/producto2.png',
     badge: 'GRATIS',
     active: true,
   },
@@ -1073,6 +1075,7 @@ let products = [
     desc: '¿Qué recibirás? •    Archivo listo para imprimir.  •    Diseño CANVA completamente personalizable.  •    Descarga digital inmediata. ',
     items: ['50 slides editables', 'PowerPoint + Keynote', 'Iconos incluidos', 'Paleta corporativa'],
     link: 'https://drive.google.com/file/d/1dyH5s9IccUIuLjUvl5O5voI3iUFZ-LO9/view?usp=sharing',
+    imagen: '/producto3.png',
     badge: '',
     active: true,
   },
@@ -1214,8 +1217,11 @@ let products = [
     }
     g.innerHTML = active.map(p => `
       <div class="product-card">
-        <div class="card-thumb">
-          ${productIcon()}
+        <div class="card-thumb" style="background:${p.imagen ? '#000' : 'var(--nude1)'}">
+          ${p.imagen
+            ? `<img src="${p.imagen}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;opacity:.9;"/>`
+            : productIcon()
+          }
           ${p.badge ? `<div class="card-badge">Nuevo</div>` : ''}
         </div>
         <div class="card-body">
@@ -1223,8 +1229,11 @@ let products = [
           <div class="card-name">${p.name}</div>
           <div class="card-desc">${p.desc}</div>
           <div class="card-footer">
-            <span class="card-price">$${p.price}</span>
-            <button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>
+            <span class="card-price">${p.price === 0 ? 'Gratis' : '$' + p.price}</span>
+            ${p.gratis
+              ? `<a href="${p.link}" target="_blank" class="add-btn">Descargar gratis</a>`
+              : `<button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>`
+            }
           </div>
         </div>
       </div>
