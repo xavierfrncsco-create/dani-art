@@ -769,6 +769,7 @@ Todo lo que necesitas para crear, vender y hacer crecer tu negocio..</p>
       <span class="section-title">Colección actual</span>
     </div>
     <div class="product-grid" id="productGrid"></div>
+<div id="verMasContainer"></div>
   </section>
 
   <section class="featured-section">
@@ -803,7 +804,7 @@ Todo lo que necesitas para crear, vender y hacer crecer tu negocio..</p>
     <div class="footer-links">
       <a href="#">Términos y condiciones</a>
       <a href="#">Política de privacidad</a>
-      <a href="mailto:hola@daniart.com">Contacto</a>
+      <a href="mailto:danifalconifotografia@gmail.com">Contacto</a>
     </div>
     <div class="footer-copy">© 2026 Dani Art. Todos los derechos reservados.</div>
   </footer>
@@ -1314,7 +1315,9 @@ let products = [
   }
 
   /* ─── RENDER CATÁLOGO ────────────────────────────────── */
-  function renderGrid() {
+let productosVisibles = 12;
+
+function renderGrid() {
     const g = document.getElementById('productGrid');
     if (!g) return;
     const active = products.filter(p => p.active);
@@ -1322,14 +1325,15 @@ let products = [
       g.innerHTML = '<p style="color:var(--muted);font-size:14px;padding:2rem 0;">No hay productos activos.</p>';
       return;
     }
-    g.innerHTML = active.map(p => `
+    const visibles = active.slice(0, productosVisibles);
+    g.innerHTML = visibles.map(p => `
       <div class="product-card">
         <div class="card-thumb" style="background:${p.imagen ? '#000' : 'var(--nude1)'}">
           ${p.imagen
             ? `<img src="${p.imagen}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;opacity:.9;"/>`
             : productIcon()
           }
-          ${p.badge ? `<div class="card-badge">Nuevo</div>` : ''}
+          ${p.badge ? `<div class="card-badge">${p.badge}</div>` : ''}
         </div>
         <div class="card-body">
           <div class="card-cat">${p.cat}</div>
@@ -1339,12 +1343,35 @@ let products = [
             <span class="card-price">${p.price === 0 ? 'Gratis' : '$' + p.price}</span>
             ${p.gratis
               ? `<a href="${p.link}" target="_blank" class="add-btn">Descargar gratis</a>`
-  : `<button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>`
-}
+              : `<button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>`
+            }
           </div>
         </div>
       </div>
     `).join('');
+
+    // Botón Ver más
+    const verMasContainer = document.getElementById('verMasContainer');
+    if (verMasContainer) {
+      if (productosVisibles < active.length) {
+        verMasContainer.innerHTML = `
+          <button onclick="verMasProductos()" style="
+            margin-top:2rem;padding:12px 32px;
+            background:transparent;color:var(--ink);
+            border:0.5px solid var(--ink);border-radius:2px;
+            font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+            cursor:pointer;display:block;margin-left:auto;margin-right:auto;
+          ">Ver más productos</button>
+        `;
+      } else {
+        verMasContainer.innerHTML = '';
+      }
+    }
+  }
+
+  function verMasProductos() {
+    productosVisibles += 12;
+    renderGrid();
   }
 
   /* ─── CARRITO ────────────────────────────────────────── */
