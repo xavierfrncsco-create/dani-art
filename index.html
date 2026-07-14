@@ -737,7 +737,6 @@
       Carrito
       <span class="cart-count" id="cartCount">0</span>
     </button>
-    <button class="admin-link" onclick="showPage('login')">Admin</button>
   </div>
 </nav>
 
@@ -882,52 +881,8 @@ Todo lo que necesitas para crear, vender y hacer crecer tu negocio..</p>
   </div>
 </div>
 
-<!-- ══════════════════ LOGIN ADMIN ══════════════════ -->
-<div id="page-login" class="page">
-  <div class="login-wrap">
-    <div class="login-box">
-      <div class="login-brand">Dani · Art</div>
-      <h3>Acceso admin</h3>
-      <div class="login-field">
-        <label class="login-label">Usuario</label>
-        <input class="login-input" id="loginUser" placeholder="admin"
-          onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div class="login-field">
-        <label class="login-label">Contraseña</label>
-        <input class="login-input" id="loginPass" type="password" placeholder="••••••"
-          onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <button class="full-btn" onclick="doLogin()">Entrar al panel</button>
-      <div class="login-error" id="loginError">Usuario o contraseña incorrectos.</div>
-      <div class="login-demo">
-        Cambia la contraseña en el código:<br>
-        <code style="font-size:11px;">const ADMIN_PASS = 'tu_clave_aqui'</code>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- ══════════════════ PANEL ADMIN ══════════════════ -->
-<div id="page-admin" class="page">
-  <div class="admin-layout">
-    <div class="admin-sidebar">
-      <div class="sidebar-brand">Panel Admin</div>
-      <div class="sidebar-item active" id="tab-catalog" onclick="adminTab('catalog')">
-        <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Catálogo
-      </div>
-      <div class="sidebar-item" id="tab-integrations" onclick="adminTab('integrations')">
-        <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        Integraciones
-      </div>
-      <div class="sidebar-logout" onclick="showPage('home')">
-        <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Volver al sitio
-      </div>
-    </div>
 
-    <div class="admin-main">
       <!-- ── Catálogo ── -->
       <div id="panel-catalog">
         <div class="admin-header">
